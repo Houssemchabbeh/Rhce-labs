@@ -29,6 +29,7 @@ A company needs to automate user creation across their infrastructure based on t
 VAULT_PASSW@RD
 
 ### 📄user_list.yml
+```yaml
 users:
 - name: adam
   uid: 3000
@@ -36,13 +37,16 @@ users:
 - name: ali
   uid: 3001
   job: manager
+```
 
 ansible-vault create vault.yml --vault password-file=secret.txt 
 ### 📄vault.yml
+```yaml
 pass_developer: Imadeveloper
 pass_manager: Imamanager
-
+```
 ### 📄 users.yml
+```yaml
 ---
 - name: 'create users with specific password and configuration'
   hosts: 'all'
@@ -59,7 +63,7 @@ pass_manager: Imamanager
         name: '{{ item.name }}'
         uid: '{{ item.uid }}'
         groups: 'opsdev'
-        password: '{{ pw_developer | password_hash(''sha512'') }}'
+        password: '{{ pass_developer | password_hash(''sha512'') }}'
       loop: '{{ users }}'
       when: 'item.job == "developer" and inentory_hostname in groups.dev'
     - name: 'create grp 2'
@@ -71,10 +75,10 @@ pass_manager: Imamanager
         name: '{{ item.name }}'
         uid: '{{ item.uid }}'
         groups: 'opsmgr'
-        password: '{{ pw_manager | password_hash(''sha512'') }}'
+        password: '{{ pass_manager | password_hash(''sha512'') }}'
       loop: '{{ users }}'
       when: 'item.job == "manager" and inentory_hostname in groups.prod'
-
+```
   ---
 
 ansible-playbook users.yml --vault-password-file=secret.txt
@@ -86,8 +90,8 @@ After running the playbook:
 - ✅ Both users have SHA512 encrypted passwords
 
 # Check if users exist and verify group
-ansible dev -m command -a "id adam"
-ansible dev -m command -a "groups adam"
-ansible prod -m command -a "id ali"
-ansible dev -m command -a "groups adam"
+- ansible dev -m command -a "id adam"
+- ansible dev -m command -a "groups adam"
+- ansible prod -m command -a "id ali"
+- ansible dev -m command -a "groups adam"
 
