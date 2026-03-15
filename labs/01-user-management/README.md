@@ -13,15 +13,11 @@ A company needs to automate user creation across their infrastructure based on t
   ---
 ## Directory structure
 /home/greg/ansible/
-├── 📄 users.yml              # Main playbook
-|
-├── 📄 vault.yml              # Pre-created vault file with passwords
-|
-├── 📄 secret.txt              # Vault password file
-|
-├── 📄 user_list.yml           # Downloaded user data
-|
-├── 📄 inventory.yml            # Inventory
+- 📄 users.yml              # Main playbook
+- 📄 vault.yml              # Pre-created vault file with passwords
+- 📄 secret.txt              # Vault password file
+- 📄 user_list.yml           # Downloaded user data
+- 📄 inventory.yml            # Inventory
 
   ---
 
@@ -48,36 +44,37 @@ pass_manager: Imamanager
 ### 📄 users.yml
 ```yaml
 ---
-- name: 'create users with specific password and configuration'
-  hosts: 'all'
+- name: create users with specific password and configuration
+  hosts: all
   vars_files:
-    - 'user_list.yml'
-    - 'vault.yml'
+    - user_list.yml
+    - vault.yml
   tasks:
-    - name: 'create grp 1'
+    - name: create opsdev group
       ansible.builtin.group:
-        name: 'opsdev'
-        state: 'present'
-    - name: 'Add user in dev group'
+        name: opsdev
+        state: present
+    - name: Add user in opsdev group
       ansible.builtin.user:
-        name: '{{ item.name }}'
-        uid: '{{ item.uid }}'
-        groups: 'opsdev'
-        password: '{{ pass_developer | password_hash(''sha512'') }}'
-      loop: '{{ users }}'
-      when: 'item.job == "developer" and inentory_hostname in groups.dev'
-    - name: 'create grp 2'
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: opsdev
+        password: "{{ pass_developer | password_hash('sha512') }}"
+      loop: "{{ users }}"
+      when: item.job == "developer" and inentory_hostname in groups.dev
+
+    - name: create opsmgr group
       ansible.builtin.group:
-        name: 'opsmgr'
-        state: 'present'
-    - name: 'Add user in dev group'
+        name: opsmgr
+        state: present
+    - name: Add user in opsmgr group
       ansible.builtin.user:
-        name: '{{ item.name }}'
-        uid: '{{ item.uid }}'
-        groups: 'opsmgr'
-        password: '{{ pass_manager | password_hash(''sha512'') }}'
-      loop: '{{ users }}'
-      when: 'item.job == "manager" and inentory_hostname in groups.prod'
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: opsmgr
+        password: "{{ pass_manager | password_hash('sha512') }}"
+      loop: "{{ users }}"
+      when: item.job == "manager" and inentory_hostname in groups.prod
 ```
   ---
 
