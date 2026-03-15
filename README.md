@@ -11,12 +11,12 @@ This repository documents my hands-on labs and notes while preparing for the RHC
 - Security and service configuration
 
 ## Lab Index
-
-| Lab 1 | User and group management: Creating users with specific group memberships |
-| Lab 2 | Package installation & Firewall configuration |
-| Lab 3 | Networking configuration |
-| Lab 4 | Nginx deployment with Ansible |
-| Lab 5 | Storage management |
+- | Lab 0 | Inventory & ansible.cfg setup |
+- | Lab 1 | User and group management: Creating users with specific group memberships |
+- | Lab 2 | Package installation & Firewall configuration |
+- | Lab 3 | Networking configuration |
+- | Lab 4 | Nginx deployment with Ansible |
+- | Lab 5 | Storage management |
 
 ## Environment
 
