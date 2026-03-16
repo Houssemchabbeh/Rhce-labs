@@ -41,7 +41,7 @@ Requirements:
 6. Mount the filesystem automatically if the required disk device exists.
 
 ---
-#playbook
+### playbook
 ```yaml
 - name: create logical volume and debug errors
   hosts: all
@@ -121,4 +121,4 @@ Regardless of success or failure, the playbook performs the following tasks:
 
 
 
-Example LVM structure used in this lab:
+
